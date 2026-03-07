@@ -246,9 +246,10 @@ function CalculatorResults({
 
 function Calculator() {
   const navigate = useNavigate({ from: "/" });
-  const search = useSearch({ from: "/" });
+  const search = useSearch({ from: "/", structuralSharing: true });
 
   const form = useForm({
+    mode: "uncontrolled",
     initialValues: {
       houseValue: Number(search.houseValue) || 500000,
       depositPercent: Number(search.depositPercent) || 10,
@@ -260,6 +261,8 @@ function Calculator() {
     },
     onValuesChange: (values) => {
       navigate({
+        replace: true,
+        resetScroll: true,
         search: {
           houseValue: values.houseValue || undefined,
           depositPercent: values.depositPercent || undefined,
