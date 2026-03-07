@@ -262,7 +262,7 @@ function Calculator() {
     onValuesChange: (values) => {
       navigate({
         replace: true,
-        resetScroll: true,
+        resetScroll: false,
         search: {
           houseValue: values.houseValue || undefined,
           depositPercent: values.depositPercent || undefined,
