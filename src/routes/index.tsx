@@ -8,13 +8,29 @@ import {
   Title,
   Text,
   NumberInput,
-  Paper,
   Stack,
   Group,
   Divider,
   RingProgress,
   Checkbox,
+  Card,
+  ThemeIcon,
 } from "@mantine/core";
+import {
+  IconHome,
+  IconBuildingEstate,
+  IconCalendarRepeat,
+  IconCoins,
+  IconCalendarMonth,
+  IconPigMoney,
+  IconReceipt,
+  IconScale,
+  IconCash,
+  IconPercentage,
+  IconCalendar,
+  IconBuildingCommunity,
+  IconSeeding,
+} from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 
 export const Route = createFileRoute("/")({
@@ -69,16 +85,15 @@ function calculateStampDuty(price: number, isFirstTimeBuyer: boolean): number {
 
   return Math.round(total);
 }
-
 function calculateLegalFees(price: number): number {
-  if (price < 100000) return 600;
-  if (price < 250000) return 850;
-  if (price < 500000) return 1100;
-  if (price < 750000) return 1500;
-  if (price < 1000000) return 2000;
-  return 2500;
+  // UK conveyancing fees (Legal Fee + 20% VAT + £600 Average Disbursements)
+  if (price < 100000) return 1800;
+  if (price < 250000) return 2100;
+  if (price < 500000) return 2500;
+  if (price < 750000) return 3000;
+  if (price < 1000000) return 3900;
+  return 5400;
 }
-
 interface CalculatorResultsProps {
   houseValue: number;
   depositPercent: number;
@@ -115,34 +130,50 @@ function CalculatorResults({
 
   return (
     <Stack>
-      <Paper>
-        <Title order={3} mb="md">
-          Upfront Costs
-        </Title>
+      <Card>
+        <Group gap="sm" mb="md">
+          <IconCoins size={24} color="var(--mantine-color-green-6)" />
+          <Title order={3}>Upfront Costs</Title>
+        </Group>
         <Stack>
           <Group justify="space-between">
-            <Text>House Value</Text>
+            <Group gap="xs">
+              <IconBuildingEstate size={18} color="var(--mantine-color-dimmed)" />
+              <Text>House Value</Text>
+            </Group>
             <Text>£{houseValue.toLocaleString()}</Text>
           </Group>
           <Divider />
           <Group justify="space-between">
-            <Text>Deposit ({depositPercent}%)</Text>
+            <Group gap="xs">
+              <IconPigMoney size={18} color="var(--mantine-color-dimmed)" />
+              <Text>Deposit ({depositPercent}%)</Text>
+            </Group>
             <Text>£{deposit.toLocaleString()}</Text>
           </Group>
           <Group justify="space-between">
-            <Text>Mortgage Amount</Text>
+            <Group gap="xs">
+              <IconCash size={18} color="var(--mantine-color-dimmed)" />
+              <Text>Mortgage Amount</Text>
+            </Group>
             <Text>£{mortgageAmount.toLocaleString()}</Text>
           </Group>
           <Divider />
           <Group justify="space-between">
-            <Text>
-              Stamp Duty{" "}
-              {isFirstTimeBuyer && houseValue <= 500000 && "(First-time buyer)"}
-            </Text>
+            <Group gap="xs">
+              <IconReceipt size={18} color="var(--mantine-color-dimmed)" />
+              <Text>
+                Stamp Duty{" "}
+                {isFirstTimeBuyer && houseValue <= 500000 && "(First-time buyer)"}
+              </Text>
+            </Group>
             <Text>£{stampDuty.toLocaleString()}</Text>
           </Group>
           <Group justify="space-between">
-            <Text>Legal Fees (est.)</Text>
+            <Group gap="xs">
+              <IconScale size={18} color="var(--mantine-color-dimmed)" />
+              <Text>Legal Fees (est.)</Text>
+            </Group>
             <Text>£{legalFees.toLocaleString()}</Text>
           </Group>
           <Divider />
@@ -153,60 +184,23 @@ function CalculatorResults({
             </Text>
           </Group>
         </Stack>
-      </Paper>
+      </Card>
 
-      <Paper>
-        <Title order={3} mb="md">
-          Monthly Payment
-        </Title>
-        <Group align="center" justify="space-between">
-          <Stack>
-            <Group justify="space-between">
-              <Text>Mortgage</Text>
-              <Text c="violet">
-                £
-                {monthlyMortgage.toLocaleString(undefined, {
-                  maximumFractionDigits: 0,
-                })}
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text>Service Charge</Text>
-              <Text c="blue">
-                £
-                {(serviceChargeYearly / 12).toLocaleString(undefined, {
-                  maximumFractionDigits: 0,
-                })}
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text>Ground Rent</Text>
-              <Text c="orange">
-                £
-                {(groundRentYearly / 12).toLocaleString(undefined, {
-                  maximumFractionDigits: 0,
-                })}
-              </Text>
-            </Group>
-            <Divider />
-            <Group justify="space-between">
-              <Text fw={700}>Total Monthly</Text>
-              <Text fw={700}>
-                £
-                {monthlyTotal.toLocaleString(undefined, {
-                  maximumFractionDigits: 0,
-                })}
-              </Text>
-            </Group>
-          </Stack>
+      <Card>
+        <Group gap="sm" mb="md">
+          <IconCalendarMonth size={24} color="var(--mantine-color-violet-6)" />
+          <Title order={3}>Monthly Payment</Title>
+        </Group>
+        <Group align="center" justify="center" gap="md">
           <RingProgress
-            size={240}
-            thickness={25}
+            thickness={32}
+            size={260}
             sections={[
               {
                 value:
                   monthlyTotal > 0 ? (monthlyMortgage / monthlyTotal) * 100 : 0,
                 color: "violet",
+                tooltip: `${((monthlyMortgage / monthlyTotal) * 100).toFixed(1)}% mortgage`,
               },
               {
                 value:
@@ -214,6 +208,7 @@ function CalculatorResults({
                     ? (serviceChargeYearly / 12 / monthlyTotal) * 100
                     : 0,
                 color: "blue",
+                tooltip: `${((serviceChargeYearly / 12 / monthlyTotal) * 100).toFixed(1)}% service charge`,
               },
               {
                 value:
@@ -221,6 +216,7 @@ function CalculatorResults({
                     ? (groundRentYearly / 12 / monthlyTotal) * 100
                     : 0,
                 color: "orange",
+                tooltip: `${((groundRentYearly / 12 / monthlyTotal) * 100).toFixed(1)}% ground rent`,
               },
             ]}
             label={
@@ -238,8 +234,59 @@ function CalculatorResults({
               </Stack>
             }
           />
+          <Stack flex={1} miw={180}>
+            <Group justify="space-between">
+              <Group gap="xs">
+                <IconPercentage size={18} color="var(--mantine-color-violet-6)" />
+                <Text>Mortgage</Text>
+              </Group>
+              <Text c="violet">
+                £
+                {monthlyMortgage.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+            </Group>
+            <Group justify="space-between">
+              <Group gap="xs">
+                <IconBuildingCommunity size={18} color="var(--mantine-color-blue-6)" />
+                <Text>Service Charge</Text>
+              </Group>
+              <Text c="blue">
+                £
+                {(serviceChargeYearly / 12).toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+            </Group>
+            <Group justify="space-between">
+              <Group gap="xs">
+                <IconSeeding size={18} color="var(--mantine-color-orange-6)" />
+                <Text>Ground Rent</Text>
+              </Group>
+              <Text c="orange">
+                £
+                {(groundRentYearly / 12).toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+            </Group>
+            <Divider />
+            <Group justify="space-between">
+              <Group gap="xs">
+                <IconCalendar size={18} />
+                <Text fw={700}>Total Monthly</Text>
+              </Group>
+              <Text fw={700}>
+                £
+                {monthlyTotal.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+            </Group>
+          </Stack>
         </Group>
-      </Paper>
+      </Card>
     </Stack>
   );
 }
@@ -291,20 +338,25 @@ function Calculator() {
 
   return (
     <Container size="xl" py="xl">
-      <Title order={1} mb="md">
-        House Cost Calculator
-      </Title>
+      <Group gap="sm" mb="md">
+        <ThemeIcon size="xl" variant="light" color="violet">
+          <IconHome size={28} />
+        </ThemeIcon>
+        <Title order={1}>House Cost Calculator</Title>
+      </Group>
       <Text c="dimmed" mb="xl">
         Calculate the costs of buying a house including stamp duty, legal fees,
-        and monthly payments.
+        and monthly payments. Data is accurate for England and Wales as of March
+        2026.
       </Text>
 
       <Group align="flex-start" gap="lg">
         <Stack style={{ flex: 1, minWidth: 300 }}>
-          <Paper>
-            <Title order={3} mb="md">
-              Property Details
-            </Title>
+          <Card>
+            <Group gap="sm" mb="md">
+              <IconBuildingEstate size={24} color="var(--mantine-color-blue-6)" />
+              <Title order={3}>Property Details</Title>
+            </Group>
             <Group grow>
               <NumberInput
                 label="House Value"
@@ -328,12 +380,13 @@ function Calculator() {
               {...form.getInputProps("isFirstTimeBuyer", { type: "checkbox" })}
               mt="md"
             />
-          </Paper>
+          </Card>
 
-          <Paper>
-            <Title order={3} mb="md">
-              Ongoing Costs (Yearly)
-            </Title>
+          <Card>
+            <Group gap="sm" mb="md">
+              <IconCalendarRepeat size={24} color="var(--mantine-color-teal-6)" />
+              <Title order={3}>Ongoing Costs (Yearly)</Title>
+            </Group>
             <Group grow>
               <NumberInput
                 label="Mortgage Rate (%)"
@@ -371,10 +424,10 @@ function Calculator() {
                 step={100}
               />
             </Group>
-          </Paper>
+          </Card>
         </Stack>
 
-        <div style={{ flex: 1, minWidth: 300 }}>
+        <div style={{ flex: 1, minWidth: 350 }}>
           <CalculatorResults
             houseValue={houseValue}
             depositPercent={depositPercent}

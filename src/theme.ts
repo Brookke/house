@@ -60,7 +60,7 @@ export const mantineTheme: MantineThemeOverride = createTheme({
       defaultProps: {
         p: "xl",
         shadow: "xl",
-        radius: "var(--mantine-radius-default)",
+        radius: "lg",
         withBorder: true,
       },
     }),
