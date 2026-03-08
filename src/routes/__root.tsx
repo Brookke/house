@@ -10,8 +10,6 @@ import {
 import "@mantine/core/styles.css";
 import { mantineTheme } from "../theme";
 
-import "../styles.css";
-
 export const Route = createRootRoute({
   component: RootComponent,
 });

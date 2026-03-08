@@ -1,6 +1,7 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "short_name": "House Calculator",
+  "name": "House Cost Calculator",
+  "description": "UK house buying cost calculator for England and Wales",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#7950f2",
   "background_color": "#ffffff"
 }
