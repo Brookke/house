@@ -5,12 +5,12 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const config = defineConfig({
-	plugins: [
-		devtools(),
-		tsconfigPaths({ projects: ["./tsconfig.json"] }),
-		tanstackRouter({ target: "react", autoCodeSplitting: true }),
-		viteReact(),
-	],
+  plugins: [
+    devtools(),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
+    tanstackRouter({ target: "react", autoCodeSplitting: true }),
+    viteReact(),
+  ],
 });
 
 export default config;
