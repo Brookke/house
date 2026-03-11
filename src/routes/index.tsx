@@ -356,8 +356,9 @@ function Calculator() {
         <Title order={1}>House Cost Calculator</Title>
       </Group>
       <Text c="dimmed" mb="xl">
-        Calculate the costs of buying a house including stamp duty, legal fees,
-        and monthly payments. Data is accurate for England and Wales as of March
+        Get a rough idea of house buying costs including stamp duty, legal fees,
+        and monthly payments. Estimates are for guidance only - always verify
+        with a solicitor or mortgage adviser. Data is for England as of March
         2026.
       </Text>
 
